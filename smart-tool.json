@@ -1,0 +1,5 @@
+{
+  "manifest": "src/SMART_TOOL.md",
+  "cli_argv": ["pc-manager"],
+  "deterministic_smoke": ["manifest"]
+}

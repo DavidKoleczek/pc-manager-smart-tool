@@ -1,6 +1,9 @@
+## Overall
+- Streamline installation
 
 ## Scan Kinds
 
+- Optimize scan, warn about large directories
 - Docker: images, containers, volumes, build cache
 - Processes and startup programs
 - Open ports and listening services

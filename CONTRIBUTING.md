@@ -8,6 +8,7 @@ Install:
 
 - [Git](https://git-scm.com/)
 - [Zig](https://ziglang.org/download/) 0.16.0 or newer
+- [Claude Code CLI](https://code.claude.com/docs/en/quickstart) signed in with a Claude subscription, for the model-backed `suggest`; the deterministic paths need only Zig. Model selection and billing behavior are in [docs/02-configuration.md](docs/02-configuration.md).
 
 ## Development Commands
 
@@ -21,5 +22,3 @@ zig build test
 # format the source in place
 zig build fmt
 ```
-
-Always use `zig build fmt`, never `zig fmt .`, so formatting only touches the project's own source and not `reference/` or other local directories.

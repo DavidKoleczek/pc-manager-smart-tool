@@ -26,10 +26,15 @@ Bare `scan` runs every kind and prints one object keyed by kind; `scan <kind>` p
 ```bash
 # Get cleanup suggestions
 pc-manager suggest --request "what files can safely be removed?"
+
+# Narrowed to one directory
+pc-manager suggest --request "old dev environments" --root C:\mydir
 ```
 
 Model-backed; needs the Claude Code CLI and its credentials, see [Configuration](02-configuration.md#model-provider).
 Runs the scans it needs on its own, so nothing has to be scanned first.
+
+- `--root`: a path the scans are narrowed to, repeatable; every mounted fixed volume when omitted.
 Prints the suggestions as indented JSON on stdout: the items and the model's closing message.
 
 ## pc-manager manifest
@@ -49,3 +54,5 @@ Needs no credentials or prerequisites, so it doubles as a smoke test of the inst
 1  # the command failed and printed the remedy: a root that does not exist, the Claude Code CLI missing or without credentials, a suggest run that errored
 2  # invalid usage: unknown command, scan kind, or flag
 ```
+
+A failure prints `{"error": {"code", "message", "remedy"}}` as indented JSON on stdout, so the remedy parses in a pipeline the same way results do.

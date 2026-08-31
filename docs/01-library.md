@@ -34,12 +34,14 @@ pub const DiskScanOptions = struct {
     min_size_bytes: u64 = 0,
 };
 
-pub fn scanDisk(gpa: Allocator, options: DiskScanOptions) !DiskScan
+pub fn scanDisk(gpa: Allocator, io: Io, options: DiskScanOptions) !DiskScan
 ```
 
 - `roots`: paths to scan; every mounted fixed volume when empty.
 - `top`: how many largest files and largest directories to keep per volume.
 - `min_size_bytes`: entries below this size are ignored.
+
+Results own their memory: `Manifest`, `DiskScan`, and `Suggestions` are freed with their `deinit`, and all serialize to JSON with `std.json`.
 
 `DiskScan` records when the scan started, how long it took, and one `Volume` per root: its path, `capacity_bytes`, `free_bytes`, `largest_files` and `largest_dirs` (each an array of path and size), and `skipped`, the paths that could not be read.
 A scan over a live system always meets paths it cannot read, from permissions or locks, so partial completion is the normal outcome and `skipped` says exactly what the scan could not see.
@@ -54,12 +56,15 @@ Suggest never deletes or modifies anything; acting on a suggestion is the caller
 ```zig
 pub const SuggestOptions = struct {
     request: []const u8,
+    roots: []const []const u8 = &.{},
 };
 
-pub fn suggest(gpa: Allocator, options: SuggestOptions) !Suggestions
+pub fn suggest(gpa: Allocator, io: Io, environ_map: *const std.process.Environ.Map, options: SuggestOptions) !Suggestions
 ```
 
 - `request`: what the caller wants suggestions about, like what can safely be removed.
+- `roots`: paths the scans are narrowed to; every mounted fixed volume when empty.
+- `environ_map`: the process environment, used to locate the settings file and to spawn the Claude Code CLI.
 
 `Suggestions` holds `items`, the list of suggestions, and `message`, the model's closing message.
 

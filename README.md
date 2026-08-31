@@ -4,11 +4,31 @@ A Smart Tool for Managing your PC.
 
 ## Installation
 
-TBD
+Install [Zig](https://ziglang.org/download/) 0.16.0 or newer, then build straight from this repository:
 
-To upgrade to the latest:
+```bash
+git clone https://github.com/DavidKoleczek/pc-manager-smart-tool.git
+cd pc-manager-smart-tool
 
-TBD
+# Linux
+zig build -Doptimize=ReleaseSafe --prefix ~/.local
+
+# Windows (PowerShell)
+zig build -Doptimize=ReleaseSafe --prefix "$env:USERPROFILE\.local"
+```
+
+This puts `pc-manager` in the `bin` directory under that prefix (`~/.local/bin`, `%USERPROFILE%\.local\bin`); pick any prefix whose `bin` is on your PATH. Verify with:
+
+```bash
+pc-manager manifest
+```
+
+To upgrade to the latest, pull and build again from the clone:
+
+```bash
+git pull
+# Run build command for your system
+```
 
 ## Interface
 
@@ -21,6 +41,12 @@ pc-manager scan disk --top 50
 pc-manager suggest --request "what files can safely be removed?"
 pc-manager suggest --request "old dev environments"
 ```
+
+## Configuration
+
+`suggest` is model-backed through the [Claude Code CLI](https://code.claude.com/docs/en/quickstart): install it, run `claude`, and sign in with a Claude subscription.
+The model defaults to `claude-sonnet-5` and is changed in the user settings file; see [docs/02-configuration.md](docs/02-configuration.md).
+Scans are deterministic and need nothing configured.
 
 ## Contributing
 
